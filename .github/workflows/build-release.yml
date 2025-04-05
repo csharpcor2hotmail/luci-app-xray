@@ -46,7 +46,7 @@ jobs:
             openwrt-${{ matrix.arch }}-${{ env.PACKAGE_NAME }}-
       - name: Install Dependencies
         run: |
-          DEBIAN_FRONTEND=noninteractive sudo apt-get install -y ccache gettext libncurses5-dev xsltproc p7zip-full zlib1g-dev zstd
+          DEBIAN_FRONTEND=noninteractive sudo apt-get install -y ccache gettext libncurses5-dev xsltproc p7zip-full zlib1g-dev xz-utils
       - name: Create Directories
         run: |
           CACHE_DIR_SDK="$(eval echo "$CACHE_DIR/sdk")"
@@ -78,8 +78,7 @@ jobs:
             fi
           fi
           cd -
-          zstd -d "$CACHE_DIR_SDK/$SDK_FILE" -o "$CACHE_DIR_SDK/${SDK_FILE%.*}.tar"
-          tar -xvf "$CACHE_DIR_SDK/${SDK_FILE%.*}.tar" -C "$SDK_HOME" --strip-components=1
+          tar -xf "$CACHE_DIR_SDK/$SDK_FILE" -C "$SDK_HOME" --strip-components=1
           cd "$SDK_HOME"
           test -d "dl" && rm -rf "dl" || true
           test -d "feeds" && rm -rf "feeds" || true
