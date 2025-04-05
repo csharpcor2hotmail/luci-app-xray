@@ -112,6 +112,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: "*.ipk"
+          draft: ${{ github.ref_type != 'tag' }}
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
