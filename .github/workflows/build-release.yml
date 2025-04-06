@@ -108,7 +108,16 @@ jobs:
         run: |
           find "$SDK_HOME/bin/" -type f -name "${PACKAGE_NAME}*.ipk" -exec cp {} "${{ github.workspace }}" \;
           find "${{ github.workspace }}" -type f -name "*.ipk" -exec ls -lh {} \;
+          echo "ipk_files=$(ls ${{ github.workspace }}/*.ipk | tr '\n' ' ')" >> $GITHUB_OUTPUT
+      - name: Upload Build Artifacts (Guaranteed)
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.PACKAGE_NAME }}-binaries-${{ matrix.arch }}
+          path: ${{ github.workspace }}/*.ipk
+          if-no-files-found: error
+          retention-days: 5
       - name: Release and Upload Assets
+        if: ${{ always() }}
         uses: softprops/action-gh-release@v1
         with:
           files: "*.ipk"
