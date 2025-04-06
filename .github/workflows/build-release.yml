@@ -29,14 +29,14 @@ jobs:
       CONFIG_CCACHE: y
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Prepare Cache Key
         id: cache_key
         run: echo "::set-output name=timestamp::$(date +"%s")"
 
       - name: Setup Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ${{ env.CACHE_DIR }}
@@ -110,7 +110,7 @@ jobs:
           find "${{ github.workspace }}" -type f -name "*.ipk" -exec ls -lh {} \;
           echo "ipk_files=$(ls ${{ github.workspace }}/*.ipk | tr '\n' ' ')" >> $GITHUB_OUTPUT
       - name: Upload Build Artifacts (Guaranteed)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PACKAGE_NAME }}-binaries-${{ matrix.arch }}
           path: ${{ github.workspace }}/*.ipk
